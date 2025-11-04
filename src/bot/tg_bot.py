@@ -1,5 +1,5 @@
 from telegram.ext import Application, MessageHandler, filters
-from src.utils.bridge import isdd, tgformat
+from src.utils.bridge import isdd, tgformat, telegram_formatting
 from src.database import store_functions
 
 
@@ -26,7 +26,9 @@ class TelegramBot:
             return
 
         username = update.message.from_user.full_name
-        msg = tgformat(username, update.message.text)
+
+        formatted_text = telegram_formatting(update.message.text, update.message.entities)
+        msg = tgformat(username, formatted_text)
 
         if not self.forward_to_discord:
             return
